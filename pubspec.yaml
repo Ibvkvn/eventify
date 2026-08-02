@@ -34,6 +34,7 @@ dependencies:
   go_router: ^17.3.0
   firebase_core: ^4.12.1
   cloud_firestore: ^6.7.1
+  firebase_auth: 
   firebase_storage: 
   freezed_annotation: ^3.1.0
   json_annotation: ^4.12.0
@@ -46,7 +47,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.15.2
+  build_runner: 2.15.1
   freezed: 
   json_serializable: ^6.14.0
 

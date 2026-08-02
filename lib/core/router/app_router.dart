@@ -1,3 +1,4 @@
+import 'package:eventify/features/auth/presentation/providers/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +11,7 @@ class AppRoutes {
 }
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.home,
+  initialLocation: AppRoutes.signup,
   debugLogDiagnostics: true,
   routes: [
     GoRoute(
@@ -23,7 +24,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.signup,
-      builder: (context, state) => const _PlaceholderScreen(title: "signup")
+      builder: (context, state) => const SignupScreen()
     ),
   ]
 );
