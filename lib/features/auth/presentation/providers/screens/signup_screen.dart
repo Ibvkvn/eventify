@@ -97,10 +97,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(height: 24,),
-                Text(
-                  "Email",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
                 SizedBox(height: 6,),
                 TextField(
                   controller: emailController,
