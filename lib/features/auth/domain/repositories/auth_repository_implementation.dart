@@ -70,6 +70,10 @@ class AuthRepositoryImplementation implements AuthRepository{
     final userDoc = await _firebaseFirestore.collection("users").doc(uid).get();
     if (!userDoc.exists){
       throw Exception("user not found");
-    } return UserModel.fromMap(userDoc.data()!, uid);
+    }try { 
+      return UserModel.fromMap(userDoc.data()!, uid);
+    } catch (e){
+      rethrow;
+    }
   }
 }

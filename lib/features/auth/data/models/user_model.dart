@@ -34,7 +34,7 @@ class UserModel extends UserEntity{
       'email': email,
       'displayName': displayName,
       'userName': userName,
-      'userNameSet': userName,
+      'userNameSet': userNameSet,
       'displayPictureUrl': displayPictureUrl,
       'bio': bio,
       'tiktokUrl': tiktokUrl,

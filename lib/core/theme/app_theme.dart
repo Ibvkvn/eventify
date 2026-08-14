@@ -25,6 +25,24 @@ class AppTheme {
     textTheme: _textTheme(AppColor.lightTextPrimary, AppColor.lightTextSecondary),
     dividerColor: AppColor.lightBorder,
     splashFactory: InkSparkle.splashFactory,
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.lightBorder)
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.lightBorder)
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.brandBlue, width: 2)
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.error)
+      ),
+    )
   );
 
   static ThemeData get dark => ThemeData(
@@ -47,7 +65,25 @@ class AppTheme {
     ),
     textTheme: _textTheme(AppColor.darkTextPrimary, AppColor.darkTextSecondary),
     dividerColor: AppColor.darkBorder,
-    splashFactory: InkSparkle.splashFactory
+    splashFactory: InkSparkle.splashFactory,
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.darkBorder)
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.darkBorder)
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.brandBlueDark, width: 2)
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: BorderSide(color: AppColor.error)
+      ),
+    )
   );
 
   static TextTheme _textTheme(Color primaryColor, Color secondaryColor){

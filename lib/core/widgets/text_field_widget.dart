@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Textfieldwidget extends StatefulWidget {
   final String title;
   final String hintText;
   final bool obscureText;
   final TextEditingController? textEditingController;
+  final String? errorText;
+  final ValueChanged<String>? onChanged;
 
 
   const Textfieldwidget({
@@ -12,7 +15,9 @@ class Textfieldwidget extends StatefulWidget {
     required this.title,
     required this.hintText,
     this.obscureText = false,
-    this.textEditingController
+    this.textEditingController,
+    this.errorText,
+    this.onChanged
   });
 
   @override
@@ -42,21 +47,14 @@ class _TextfieldwidgetState extends State<Textfieldwidget> {
         TextField(
           controller: widget.textEditingController,
           obscureText: _obscureText,
+          onChanged: widget.onChanged,
           decoration: InputDecoration(
             hintText: widget.hintText, 
             hintStyle: Theme.of(context).textTheme.bodyMedium,
+            errorText: widget.errorText,
             contentPadding: EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 14
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25),
             ),
             suffixIcon: widget.obscureText? IconButton(
               onPressed: () {
@@ -64,7 +62,7 @@ class _TextfieldwidgetState extends State<Textfieldwidget> {
                   _obscureText = !_obscureText;
                 });
               }, 
-              icon: Icon(_obscureText? Icons.visibility_off : Icons.visibility)
+              icon: PhosphorIcon(_obscureText? PhosphorIcons.eyeSlash() : PhosphorIcons.eye())
             ) : null,
           ),
         ),

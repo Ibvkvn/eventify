@@ -21,7 +21,7 @@ class RedirectPageTextWidget extends StatelessWidget {
           message,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        GestureDetector(
+        InkWell(
           onTap: onTap,
           child: Text(
             redirectedPage,

@@ -6,6 +6,7 @@ import 'package:eventify/features/auth/presentation/providers/auth_provider.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -71,96 +72,73 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 16,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_back_ios_rounded)
-                  ],
-                ),
-                SizedBox(height: 16,),
-                Text(
-                  "Create Account",
-                  style: Theme.of(context).textTheme.displaySmall 
-                ),
-                SizedBox(height: 6,),
-                Text(
-                  "Create events, create memories, share memories",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                SizedBox(height: 24,),
-                SizedBox(height: 6,),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: "enter your email", 
-                    hintStyle: Theme.of(context).textTheme.bodyMedium,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 14
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    errorText: emailError,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () => context.go(AppRoutes.login),
+                        child: PhosphorIcon(PhosphorIcons.arrowLeft()),
+                      )
+                    ],
                   ),
-                  onChanged: (_) {
-                    if (emailError != null){
+                  SizedBox(height: 16,),
+                  Text(
+                    "Create Account",
+                    style: Theme.of(context).textTheme.displaySmall 
+                  ),
+                  SizedBox(height: 6,),
+                  Text(
+                    "Create events, create memories, share memories",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 24,),
+                  SizedBox(height: 6,),
+                  Textfieldwidget(title: "Email", hintText: "enter your email", textEditingController: emailController,),
+                  SizedBox(height: 16,),
+                  Textfieldwidget(title: "Password", hintText: "enter your password", obscureText: true, textEditingController: passwordController,),
+                  SizedBox(height: 16,),
+                  Textfieldwidget(title: "Confirm Password", hintText: "confirm your password", obscureText: true,),
+                  SizedBox(height: 64,),
+                  TermsCheckbox(
+                    value: checkBoxTick, 
+                    onChanged: (val){
                       setState(() {
-                        emailError = null;
+                        checkBoxTick = val ?? false;
                       });
-                    }
-                  },
-                ),
-                SizedBox(height: 16,),
-                Textfieldwidget(title: "Password", hintText: "enter your password", obscureText: true, textEditingController: passwordController,),
-                SizedBox(height: 16,),
-                Textfieldwidget(title: "Confirm Password", hintText: "confirm your password", obscureText: true,),
-                SizedBox(height: 64,),
-                TermsCheckbox(
-                  value: checkBoxTick, 
-                  onChanged: (val){
-                    setState(() {
-                      checkBoxTick = val ?? false;
-                    });
-                  },
-                ),
-                SizedBox(height: 16,),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: FilledButton(
-                    onPressed: isLoading || !checkBoxTick ? null : handleSignUp, 
-                    child:  isLoading ? SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
-                    ) :  Text("Continue"),
+                    },
                   ),
-                ), 
-                SizedBox(height: 16,),
-                RedirectPageTextWidget(message: "Already have an account? ", redirectedPage: "Login", onTap: () {
-                  context.go(AppRoutes.login);
-                },) 
-
-              ],
-            ) 
+                  SizedBox(height: 16,),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: FilledButton(
+                      onPressed: isLoading || !checkBoxTick ? null : handleSignUp, 
+                      child:  isLoading ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      ) :  Text("Continue"),
+                    ),
+                  ), 
+                  SizedBox(height: 16,),
+                  RedirectPageTextWidget(message: "Already have an account? ", redirectedPage: "Login", onTap: () {
+                    context.go(AppRoutes.login);
+                  },) 
+                ],
+              ) 
+            ),
           ),
         ),
       )

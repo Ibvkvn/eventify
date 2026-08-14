@@ -3,12 +3,12 @@ import 'package:eventify/features/auth/domain/repositories/auth_repository.dart'
 import 'package:eventify/features/auth/domain/repositories/auth_repository_implementation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final authRepositoyProvider = Provider<AuthRepository>((ref){
+final authRepositoryProvider = Provider<AuthRepository>((ref){
   return AuthRepositoryImplementation();
 });
 
 final authStateChangesProvider = StreamProvider<UserEntity?>((ref){
-  return ref.watch(authRepositoyProvider).authStateChanges;
+  return ref.watch(authRepositoryProvider).authStateChanges;
 });
 
 class AuthController extends AsyncNotifier{
@@ -18,28 +18,28 @@ class AuthController extends AsyncNotifier{
   Future<void> singUp({required String email, required String password}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await ref.read(authRepositoyProvider).signUp(email: email, password: password);
+      await ref.read(authRepositoryProvider).signUp(email: email, password: password);
     });
   }
 
   Future<void> signIn({required String email, required String password}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await ref.read(authRepositoyProvider).signIn(email: email, password: password);
+      await ref.read(authRepositoryProvider).signIn(email: email, password: password);
     });
   }
 
   Future<void> signOut() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await ref.read(authRepositoyProvider).signOut();
+      await ref.read(authRepositoryProvider).signOut();
     });
   }
 
   Future<void> setUserName(String uid, String userName) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await ref.read(authRepositoyProvider).setUserName(uid: uid, userName: userName);
+      await ref.read(authRepositoryProvider).setUserName(uid: uid, userName: userName);
     });
   }
 }
