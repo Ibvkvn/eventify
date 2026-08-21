@@ -46,6 +46,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     SizedBox(height: 18,),
                     Dividerwidget(text: "My posts"),
+                    SizedBox(height: 18,),
                     Consumer(builder: (context, ref, _){
                       final mediaAsync = ref.watch(userMediaProvider(data.id));
 
@@ -64,6 +65,7 @@ class ProfileScreen extends ConsumerWidget {
                               crossAxisSpacing: 2,
                               mainAxisSpacing: 2
                             ), 
+                            itemCount: data.length,
                             itemBuilder: (context, index){
                               final media = data[index];
                               return _ThumbnailTile(media: media);
@@ -91,7 +93,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: CustomProgressIndicator(),
               );
             },
-            error: (_, __){
+            error: (_, _){
               return Center(
                 child: Text("something went wrong"),
               );
@@ -123,6 +125,7 @@ class _ThumbnailTile extends StatelessWidget {
             Image.network(
               imageUrl,
               fit: BoxFit.cover,
+              height: 100,
               errorBuilder: (context, error, stackTrace) => PhosphorIcon(PhosphorIcons.videoCamera())
             )
           else

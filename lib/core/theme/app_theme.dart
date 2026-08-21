@@ -15,6 +15,7 @@ class AppTheme {
       onSurface: AppColor.lightTextPrimary,
       tertiary: AppColor.darkSurfaceVariant,
       error: AppColor.error,
+      tertiaryFixed: AppColor.lightBackground
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColor.lightBackground,
@@ -56,7 +57,8 @@ class AppTheme {
       surfaceContainerHighest: AppColor.darkSurfaceVariant,
       onSurface: AppColor.darkTextPrimary,
       tertiary: AppColor.lightSurfaceVariant,
-      error: AppColor.error
+      error: AppColor.error,
+      tertiaryFixed: AppColor.lightBackground
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColor.darkBackground,
@@ -88,7 +90,7 @@ class AppTheme {
     )
   );
 
-  static TextTheme _textTheme(Color primaryColor, Color secondaryColor){
+  static TextTheme _textTheme(Color? primaryColor, Color? secondaryColor){
     return TextTheme(
       headlineLarge: TextStyle(
         fontSize: 28,

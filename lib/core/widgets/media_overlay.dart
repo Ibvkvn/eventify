@@ -26,12 +26,13 @@ class MediaOverlay extends ConsumerWidget {
         children: [
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 eventAsync.when(
                   data: (data){
                     return Text(
                       data?.title ?? "unkown Room",
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Theme.of(context).colorScheme.tertiaryFixed),
                     );
                   }, 
                   error: (object, stackTrace){
