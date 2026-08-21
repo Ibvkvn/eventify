@@ -66,7 +66,10 @@ class MediaOverlay extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(12)
                       ),
-                      child: Text("join event!"),
+                      child: Text(
+                        "join event!",
+                        style: TextStyle(color: Theme.of(context).colorScheme.tertiaryFixed),
+                      ),
                     );
                   }, 
                   error: (_, __){
