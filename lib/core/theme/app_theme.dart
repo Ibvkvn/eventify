@@ -13,7 +13,8 @@ class AppTheme {
       surface: AppColor.lightSurface,
       surfaceContainerHighest: AppColor.lightSurfaceVariant,
       onSurface: AppColor.lightTextPrimary,
-      error: AppColor.error
+      tertiary: AppColor.darkSurfaceVariant,
+      error: AppColor.error,
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColor.lightBackground,
@@ -54,6 +55,7 @@ class AppTheme {
       surface: AppColor.darkSurface,
       surfaceContainerHighest: AppColor.darkSurfaceVariant,
       onSurface: AppColor.darkTextPrimary,
+      tertiary: AppColor.lightSurfaceVariant,
       error: AppColor.error
     ),
     appBarTheme: const AppBarTheme(

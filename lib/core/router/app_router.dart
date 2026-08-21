@@ -3,7 +3,6 @@ import 'package:eventify/features/auth/presentation/providers/auth_provider.dart
 import 'package:eventify/features/auth/presentation/providers/screens/login_screen.dart';
 import 'package:eventify/features/auth/presentation/providers/screens/signup_screen.dart';
 import 'package:eventify/features/auth/presentation/providers/screens/username_picker_screen.dart';
-import 'package:eventify/features/events/presentation/providers/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,11 +14,12 @@ class AppRoutes {
   static const String login = "/login";
   static const String signup = "/signup";
   static const String userNamePicker = "/userNamePicker";
+  static const String profile = "/profile";
 }
 
 final routerProvider = Provider<GoRouter>((ref){
   final refreshNotifier = _RouterRefreshNotifier();
-  ref.listen(authStateChangesProvider, (_, __) => refreshNotifier.notify());
+  ref.listen(authStateChangesProvider, (_, _) => refreshNotifier.notify());
 
   return GoRouter(
     initialLocation: AppRoutes.signup,
@@ -61,28 +61,11 @@ final routerProvider = Provider<GoRouter>((ref){
       GoRoute(
         path: AppRoutes.userNamePicker,
         builder: (context, state) => const UsernamePickerScreen()
-      )
+      ),
     ]
   );
 });
 
 class _RouterRefreshNotifier extends ChangeNotifier {
   void notify () => notifyListeners();
-}
-
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-  const _PlaceholderScreen({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.headlineSmall
-        ),
-      ),
-    );
-  }
 }

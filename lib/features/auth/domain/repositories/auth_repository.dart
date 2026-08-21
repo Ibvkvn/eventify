@@ -8,4 +8,13 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<void> setUserName({required String uid, required String userName});
   Future<bool> isUserNameAvailable(String userName);
+  Future<UserEntity?> getUserById(String uid);
+  Future<void> updateUserProfile({
+    required String uid,
+    String? displayName,
+    String? bio,
+    String? tiktokUrl,
+    String? instagramUrl
+  });
+  
 }

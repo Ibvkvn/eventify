@@ -76,4 +76,33 @@ class AuthRepositoryImplementation implements AuthRepository{
       rethrow;
     }
   }
+
+  @override
+  Future<UserEntity?> getUserById(String uid) async {
+    final userDoc = await _firebaseFirestore.collection("users").doc(uid).get();
+    if(!userDoc.exists){
+      return null;
+    }
+    return UserModel.fromMap(userDoc.data()!, uid);
+  }
+
+  @override
+  Future<void> updateUserProfile({required String uid, String? displayName, String? bio, String? tiktokUrl, String? instagramUrl}) async {
+    final updates = <String, dynamic>{};
+    if(displayName != null){
+      updates["displayName"] = displayName;
+    }
+    if(bio != null){
+      updates["bio"] = bio;
+    }
+    if(tiktokUrl != null){
+      updates["tiktokUrl"] = tiktokUrl;
+    }
+    if(instagramUrl != null){
+      updates["instagramUrl"] = instagramUrl;
+    }
+    if(updates.isEmpty) return; 
+
+    await _firebaseFirestore.collection("users").doc(uid).update(updates);
+  } 
 }

@@ -1,3 +1,5 @@
+import 'package:eventify/features/auth/domain/entities/user_entity.dart';
+import 'package:eventify/features/auth/presentation/providers/auth_provider.dart';
 import 'package:eventify/features/events/data/repositories/event_repository_implementation.dart';
 import 'package:eventify/features/events/domain/entities/event_entity.dart';
 import 'package:eventify/features/events/domain/repositories/event_repository.dart';
@@ -39,4 +41,16 @@ final publicFeedProvider = StreamProvider<List<MediaEntity>>((ref){
     error: (err, stack) => Stream.error(err, stack), 
     loading: () => const Stream.empty(),
   );
+});
+
+final eventIdProvider = FutureProvider.family<EventEntity?, String>((ref, eventId){
+  return ref.watch(eventRepositoryProvider).getEventById(eventId);
+});
+
+final userIdProvider = FutureProvider.family<UserEntity?, String>((ref, userId){
+  return ref.watch(authRepositoryProvider).getUserById(userId);
+});
+
+final userMediaProvider = StreamProvider.family<List<MediaEntity>, String>((ref, userId){
+  return ref.watch(mediaRepositoryProvider).watchUserMedia(userId);
 });

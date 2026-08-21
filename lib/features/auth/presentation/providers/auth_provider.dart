@@ -42,6 +42,20 @@ class AuthController extends AsyncNotifier{
       await ref.read(authRepositoryProvider).setUserName(uid: uid, userName: userName);
     });
   }
+
+  Future<void> updateUserProfile({required String uid, String? displayName, String? bio, String? tiktokUrl, String? instagramUrl}) async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(authRepositoryProvider).updateUserProfile(
+        uid: uid, 
+        displayName: displayName, 
+        bio: bio, 
+        tiktokUrl: tiktokUrl, 
+        instagramUrl: instagramUrl
+      );
+    });
+  }
+
 }
 
 final authControllerProvider = AsyncNotifierProvider<AuthController, void>((){

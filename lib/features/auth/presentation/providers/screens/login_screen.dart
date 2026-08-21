@@ -1,5 +1,6 @@
 import 'package:eventify/core/router/app_router.dart';
-import 'package:eventify/core/widgets/dividerWidget.dart';
+import 'package:eventify/core/widgets/custom_progress_indicator.dart';
+import 'package:eventify/core/widgets/divider_widget.dart';
 import 'package:eventify/core/widgets/redirect_page_text_widget.dart';
 import 'package:eventify/core/widgets/text_field_widget.dart';
 import 'package:eventify/features/auth/presentation/providers/auth_provider.dart';
@@ -134,7 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     SizedBox(
                       height: 20, 
                       width: 20, 
-                      child: CircularProgressIndicator()
+                      child: CustomProgressIndicator()
                     ) : 
                     Text(
                       "Continue",

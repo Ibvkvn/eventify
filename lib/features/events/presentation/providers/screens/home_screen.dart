@@ -1,3 +1,5 @@
+import 'package:eventify/core/widgets/custom_progress_indicator.dart';
+import 'package:eventify/core/widgets/media_overlay.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
 import 'package:eventify/features/media/domain/entities/media_entity.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +34,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             }
           );
         }, 
-        error: (err, stack) => Center(child: Text("something went wrong: ${err}"),), 
+        error: (err, stack) => Center(child: Text("something went wrong: $err"),), 
         loading: (){
           return Center(
-            child: CircularProgressIndicator(),
+            child: CustomProgressIndicator(),
           );
         }
       )
@@ -51,28 +53,34 @@ class _MediaTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      width: double.infinity,
-      height: double.infinity,
-      child: media.mediaType == MediaType.photo ?
-      Image.network(
-        media.mediaUrl,
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, progress){
-          if (progress == null){
-            return child;
-          }
-          return Center(child: CircularProgressIndicator(),);
-        },
-        errorBuilder:(context, error, stackTrace) {
-          return  Center(
-            child: PhosphorIcon(PhosphorIcons.imageBroken()),);
-        },
-      ) : 
-      Center(
-        child: PhosphorIcon(PhosphorIcons.videoCamera())
-      ), 
+    return Stack(
+      fit: StackFit.expand,
+      children:[ 
+        Container(
+          color: Colors.black,
+          width: double.infinity,
+          height: double.infinity,
+          child: media.mediaType == MediaType.photo ?
+          Image.network(
+            media.mediaUrl,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, progress){
+              if (progress == null){
+                return child;
+              }
+              return Center(child: CustomProgressIndicator(),);
+            },
+            errorBuilder:(context, error, stackTrace) {
+              return  Center(
+                child: PhosphorIcon(PhosphorIcons.imageBroken()),);
+            },
+          ) : 
+          Center(
+            child: PhosphorIcon(PhosphorIcons.videoCamera())
+          ), 
+        ),
+        MediaOverlay(media: media)
+      ]
     );
   }
 }

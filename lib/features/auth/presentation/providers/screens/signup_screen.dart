@@ -1,4 +1,5 @@
 import 'package:eventify/core/router/app_router.dart';
+import 'package:eventify/core/widgets/custom_progress_indicator.dart';
 import 'package:eventify/core/widgets/redirect_page_text_widget.dart';
 import 'package:eventify/core/widgets/terms_checkbox.dart';
 import 'package:eventify/core/widgets/text_field_widget.dart';
@@ -126,9 +127,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       child:  isLoading ? SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
+                        child: CustomProgressIndicator(),
                       ) :  Text("Continue"),
                     ),
                   ), 

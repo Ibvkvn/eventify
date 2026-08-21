@@ -71,4 +71,13 @@ class MediaRepositoryImplementation implements MediaRepository{
       (snap) => snap.docs.map((d) => MediaModel.fromMap(d.data(), d.id)).toList()
     );
   }
+
+  @override
+  Stream<List<MediaEntity>> watchUserMedia (String userId) {
+    return _media
+    .where('uploadedBy', isEqualTo: userId)
+    .orderBy("createdAt", descending: true)
+    .snapshots()
+    .map((snap) => snap.docs.map((d) => MediaModel.fromMap(d.data(), d.id)).toList());
+  }
 }
