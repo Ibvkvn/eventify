@@ -72,7 +72,7 @@ class MediaOverlay extends ConsumerWidget {
                       ),
                     );
                   }, 
-                  error: (_, __){
+                  error: (_, _){
                     return SizedBox.shrink();
                   }, 
                   loading: (){

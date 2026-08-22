@@ -54,3 +54,7 @@ final userIdProvider = FutureProvider.family<UserEntity?, String>((ref, userId){
 final userMediaProvider = StreamProvider.family<List<MediaEntity>, String>((ref, userId){
   return ref.watch(mediaRepositoryProvider).watchUserMedia(userId);
 });
+
+final userEventProvider = StreamProvider.family<List<EventEntity>, String>((ref, userId){
+  return ref.watch(eventRepositoryProvider).watchUserEvents(userId);
+});

@@ -1,5 +1,6 @@
 import 'package:eventify/core/widgets/navigation_bar_widget.dart';
 import 'package:eventify/features/events/presentation/providers/screens/home_screen.dart';
+import 'package:eventify/features/media/presentation/camera_tab_screen.dart';
 import 'package:eventify/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class _HomeShellState extends State<HomeShell> {
 
   final _screens = const [
     HomeScreen(),
-    _PlaceholderScreen(title: "Camera"),
+    CameraTabScreen(),
     ProfileScreen()
   ];
 
@@ -35,23 +36,6 @@ class _HomeShellState extends State<HomeShell> {
               _currentIndex = index;
             })
           }
-        ),
-      ),
-    );
-  }
-}
-
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-  const _PlaceholderScreen({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.headlineSmall
         ),
       ),
     );
