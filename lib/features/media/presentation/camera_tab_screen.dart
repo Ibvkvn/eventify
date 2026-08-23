@@ -14,7 +14,9 @@ class CameraTabScreen extends StatelessWidget {
 
     Navigator.push(
       buildContext, 
-      MaterialPageRoute(builder: (buildContext) => SelectedRoomScreen(mediaFilePath: photo.path))
+      MaterialPageRoute(
+        builder: (buildContext) => SelectedRoomScreen(mediaFilePath: photo.path)
+      )
     );
   }
 
