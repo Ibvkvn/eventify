@@ -1,17 +1,5 @@
 # eventify
 
-A new Flutter project.
+Eventify is an app that lets you and your friends share different povs of an event. think of it this way, you and your friends host a party, everyone takes different pictures/video and upload them to a shared room where you can look back on it later.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+apps that inspired me are locket, airbuds, instagram and tiktok
