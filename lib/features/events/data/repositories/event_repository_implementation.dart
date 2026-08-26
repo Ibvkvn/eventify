@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/features/events/data/models/event_model.dart';
 import 'package:eventify/features/events/domain/entities/event_entity.dart';
 import 'package:eventify/features/events/domain/repositories/event_repository.dart';
+import 'package:flutter/rendering.dart';
 
 class EventRepositoryImplementation implements EventRepository{
   final FirebaseFirestore _firebaseFirestore;
@@ -61,25 +62,38 @@ class EventRepositoryImplementation implements EventRepository{
     if (memberDoc.exists) return;
 
     await _firebaseFirestore.runTransaction((transaction) async {
-      transaction.set(memberRef, {'joinedAt': DateTime.now()});
+      transaction.set(memberRef, {"uid": userId, 'joinedAt': DateTime.now()});
       transaction.update(eventRef, {'memberCount': FieldValue.increment(1)});
     });
   }
 
   @override
   Future<bool> isMember({required String eventId, required String userId}) async {
-    final doc = await _events.doc(eventId).collection("users").doc(userId).get();
+    final doc = await _events.doc(eventId).collection("members").doc(userId).get();
     return doc.exists;
   }
 
   @override
   Stream<List<EventEntity>> watchUserEvents(String userId) {
+    debugPrint('🔍 watchUserEvents called for uid: $userId');
     final createdStream = _events.where("createdBy", isEqualTo: userId).snapshots();
-    final joinedStream = _firebaseFirestore.collectionGroup("members").where(FieldPath.documentId, isEqualTo: userId).snapshots();
+    final joinedStream = _firebaseFirestore.collectionGroup("members").where("uid", isEqualTo: userId).snapshots();
 
     return createdStream.asyncMap((createdSnap) async {
+      debugPrint('🔍 createdStream fired — ${createdSnap.docs.length} created events');
       final created = createdSnap.docs.map((d) => EventModel.fromMap(d.data(), d.id)).toList();
-      final joinedSnap = await joinedStream.first;
+
+      debugPrint('🔍 about to await joinedStream.first...');
+      late final QuerySnapshot<Map <String, dynamic>> joinedSnap;
+      try{
+        joinedSnap = await joinedStream.first;
+        debugPrint("🔍 joinedStream.first resolved - ${joinedSnap.docs.length} joined docs");
+      } catch (e, stack) {
+        debugPrint("❌ joinedStream.first failed $e");
+        rethrow;
+      }
+
+      debugPrint('🔍 joinedStream.first resolved — ${joinedSnap.docs.length} joined docs');
       final joinedEventsId = joinedSnap.docs.map((d) => d.reference.parent.parent!.id);
       final joinedEvents = <EventEntity> [];
       for (final eventId in joinedEventsId){
@@ -92,6 +106,7 @@ class EventRepositoryImplementation implements EventRepository{
         }
       }
 
+      debugPrint('🔍 returning combined list — total: ${created.length + joinedEvents.length}');
       return[...created, ...joinedEvents];
     });
   }
