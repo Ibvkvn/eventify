@@ -53,9 +53,9 @@ class _SelectedRoomScreenState extends ConsumerState<SelectedRoomScreen> {
     try{
       await ref.watch(mediaRepositoryProvider).uploadMedia(eventId: selectedEvent!.id, uploadedBy: currentUser.id, mediaPath: widget.mediaFilePath, fileType: MediaType.photo);
       
-      // if(mounted){
-      //   Navigator.popUntil(context, (route) => route.isFirst);
-      // }
+      if(mounted){
+        Navigator.popUntil(context, (route) => route.isFirst);
+      }
     } catch (e){
       if(mounted){
         setState(() {

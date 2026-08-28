@@ -88,8 +88,8 @@ class EventRepositoryImplementation implements EventRepository{
       try{
         joinedSnap = await joinedStream.first;
         debugPrint("🔍 joinedStream.first resolved - ${joinedSnap.docs.length} joined docs");
-      } catch (e, stack) {
-        debugPrint("❌ joinedStream.first failed $e");
+      } catch (_, _) {
+        debugPrint("❌ joinedStream.first failed");
         rethrow;
       }
 

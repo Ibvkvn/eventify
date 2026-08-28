@@ -31,10 +31,11 @@ class ProfileScreen extends ConsumerWidget {
                         Column(
                           children: [
                             Text(
-                              "${data!.displayName}"
+                              "${data!.displayName==null ?  data.id.substring(0,12) : data.displayName}",
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             Text(
-                              data.userName
+                              "@${data.userName}"
                             )
                           ],
                         ),
