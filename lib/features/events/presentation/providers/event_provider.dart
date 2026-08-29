@@ -26,21 +26,8 @@ final publicEventsProvider = StreamProvider<List<EventEntity>>((ref){
 });
 
 final publicFeedProvider = StreamProvider<List<MediaEntity>>((ref){
-  final publicEventsAsync = ref.watch(publicEventsProvider);
-
-  return publicEventsAsync.when(
-    data: (events){
-      final eventIds = events.map((e) => e.id).toList();
-      debugPrint('📍 event IDs passed to media query: $eventIds');
-      // return ref.watch(mediaRepositoryProvider).watchMediaForEvents(eventIds);
-      return ref.watch(mediaRepositoryProvider).watchMediaForEvents(eventIds).map((media) {
-        debugPrint('📍 media found: ${media.length}');
-        return media;
-      });
-    }, 
-    error: (err, stack) => Stream.error(err, stack), 
-    loading: () => const Stream.empty(),
-  );
+  final eventIds = ref.watch(publicEventIdsProvider);
+  return ref.watch(mediaRepositoryProvider).watchMediaForEvents(eventIds);
 });
 
 final eventIdProvider = FutureProvider.family<EventEntity?, String>((ref, eventId){
@@ -57,4 +44,10 @@ final userMediaProvider = StreamProvider.family<List<MediaEntity>, String>((ref,
 
 final userEventProvider = StreamProvider.family<List<EventEntity>, String>((ref, userId){
   return ref.watch(eventRepositoryProvider).watchUserEvents(userId);
+});
+
+final publicEventIdsProvider = Provider<List<String>>((ref){
+  return ref.watch(publicEventsProvider.select(
+    (asyncEvents) => asyncEvents.value?.map((e) => e.id).toList() ?? [],
+  ));
 });

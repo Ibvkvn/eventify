@@ -14,9 +14,10 @@ class MediaOverlay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventAsync = ref.watch(eventIdProvider(media.id));
+    final eventAsync = ref.watch(eventIdProvider(media.eventId));
     final userAsync = ref.watch(userIdProvider(media.uploadedBy));
     final currentUser = ref.watch(authStateChangesProvider).value;
+    final joinEventAsync = ref.watch(eventRepositoryProvider);
 
     return Positioned(
       left: -40,
@@ -29,12 +30,10 @@ class MediaOverlay extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 eventAsync.when(
-                  data: (data){
-                    return Text(
-                      data?.title ?? "unkown Room",
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Theme.of(context).colorScheme.tertiaryFixed),
-                    );
-                  }, 
+                  data: (data) => Text(
+                    data?.title ?? "unknown room",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20),
+                  ), 
                   error: (object, stackTrace){
                     return SizedBox.shrink();
                   }, 
@@ -55,22 +54,10 @@ class MediaOverlay extends ConsumerWidget {
                 SizedBox(height: 4,),
                 eventAsync.when(
                   data: (event){
-                    if (event != null || currentUser == null){
+                    if (event == null || currentUser == null){
                       return SizedBox.shrink();
                     }
-                    return Container(
-                      height: 40,
-                      width: 80,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(12)
-                      ),
-                      child: Text(
-                        "join event!",
-                        style: TextStyle(color: Theme.of(context).colorScheme.tertiaryFixed),
-                      ),
-                    );
+                    return JoinRoomWidget(currentUserId: currentUser.email, eventId: event.id);
                   }, 
                   error: (_, _){
                     return SizedBox.shrink();
@@ -84,6 +71,67 @@ class MediaOverlay extends ConsumerWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class JoinRoomWidget extends ConsumerStatefulWidget {
+  final String currentUserId;
+  final String eventId;
+
+  const JoinRoomWidget({
+    super.key,
+    required this.currentUserId,
+    required this.eventId
+  });
+
+  @override
+  ConsumerState<JoinRoomWidget> createState() => _JoinRoomWidgetState();
+}
+
+class _JoinRoomWidgetState extends ConsumerState<JoinRoomWidget> {
+  bool? isMemeber;
+  bool isJoining = false;
+
+  @override
+  void initState (){
+    super.initState();
+    checkMemberShip();
+  }
+
+  Future<void> checkMemberShip() async {
+    final result = await ref.watch(eventRepositoryProvider).isMember(eventId: widget.eventId, userId: widget.currentUserId);
+    if(mounted){
+      setState(() {
+        isMemeber = result;
+      });
+    }
+  }
+
+  Future<void> handleJoinRoom() async {
+    setState(() {
+      isJoining = true;
+    });
+    await ref.read(eventRepositoryProvider).joinEvent(userId: widget.currentUserId, eventId: widget.eventId);
+    if(mounted){
+      setState(() {
+        isMemeber = true;
+        isJoining = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: isMemeber == true ? null : handleJoinRoom, 
+      child: isJoining ? 
+      CustomProgressIndicator() 
+      : 
+      Text(
+        isMemeber == true ? "already a member" : "join event!",
+        style: Theme.of(context).textTheme.labelLarge,
+      )
     );
   }
 }
