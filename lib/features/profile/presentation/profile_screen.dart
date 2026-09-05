@@ -1,5 +1,6 @@
 import 'package:eventify/core/widgets/custom_progress_indicator.dart';
 import 'package:eventify/core/widgets/divider_widget.dart';
+import 'package:eventify/core/widgets/text_field_widget.dart';
 import 'package:eventify/features/auth/presentation/providers/auth_provider.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
 import 'package:eventify/features/media/domain/entities/media_entity.dart';
@@ -13,6 +14,11 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(authStateChangesProvider);
+    final profileAsync = ref.read(authControllerProvider.notifier);
+    final TextEditingController displayNameController = TextEditingController();
+    final TextEditingController bioController = TextEditingController();
+    final TextEditingController tiktokUrlController = TextEditingController();
+    final TextEditingController instagramUrlController = TextEditingController();
 
     return Scaffold(
       body: SafeArea(
@@ -36,6 +42,48 @@ class ProfileScreen extends ConsumerWidget {
                             ),
                             Text(
                               "@${data.userName}"
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context, 
+                                  builder: (context) => AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadiusGeometry.circular(6)
+                                    ),
+                                    title: Text("edit your profile"),
+                                    content: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: (){
+                                                profileAsync.updateUserProfile(
+                                                  uid: "r", 
+                                                  bio: bioController.text, 
+                                                  displayName: displayNameController.text, 
+                                                  tiktokUrl: tiktokUrlController.text, 
+                                                  instagramUrl: instagramUrlController.text
+                                                );
+                                              },
+                                              child: PhosphorIcon(PhosphorIcons.thumbsUp())
+                                            ),
+                                            GestureDetector(
+                                              child: PhosphorIcon(PhosphorIcons.x())
+                                            )
+                                          ],
+                                        ),
+                                        Textfieldwidget(title: "display name", hintText: " ", textEditingController: displayNameController,),
+                                        Textfieldwidget(title: "bio", hintText: " ", textEditingController: bioController,),
+                                        Textfieldwidget(title: "tiktok username", hintText: " ", textEditingController: tiktokUrlController,),
+                                        Textfieldwidget(title: "instagram username", hintText: " ", textEditingController: instagramUrlController,),
+                                      ],
+                                    ),
+                                  )
+                                );
+                              },
+                              child: Text("edit profile"),
                             )
                           ],
                         ),
@@ -136,3 +184,86 @@ class _ThumbnailTile extends StatelessWidget {
     );
   }
 }
+
+class UpdateUserProfileTab {
+  static OverlayEntry? overlayEntry;
+
+  static void show(BuildContext buildContext, WidgetRef ref, {required String userId}){
+    hide();
+
+    final userAsync = ref.read(authControllerProvider.notifier);
+    final overlay = Overlay.of(buildContext);
+    final TextEditingController displayNameController = TextEditingController();
+    final TextEditingController bioController = TextEditingController();
+    final TextEditingController tiktokUrlController = TextEditingController();
+    final TextEditingController instagramUrlController = TextEditingController();
+
+    overlayEntry = OverlayEntry(
+      builder: (buildContext) => Positioned(
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      userAsync.updateUserProfile(
+                        uid: userId, 
+                        bio: bioController.text, 
+                        displayName: displayNameController.text, 
+                        tiktokUrl: tiktokUrlController.text, 
+                        instagramUrl: instagramUrlController.text
+                      );
+                      hide();
+                    },
+                    child: PhosphorIcon(PhosphorIcons.thumbsUp())
+                  ),
+                  GestureDetector(
+                    onTap: () => hide(),
+                    child: PhosphorIcon(PhosphorIcons.x())
+                  )
+                ],
+              ),
+              Textfieldwidget(title: "display name", hintText: " ", textEditingController: displayNameController,),
+              Textfieldwidget(title: "bio", hintText: " ", textEditingController: bioController,),
+              Textfieldwidget(title: "tiktok username", hintText: " ", textEditingController: tiktokUrlController,),
+              Textfieldwidget(title: "instagram username", hintText: " ", textEditingController: instagramUrlController,),
+            ],
+          ),
+        )
+      ),
+    );
+
+    overlay.insert(overlayEntry!);
+  }
+
+  static void hide(){
+    overlayEntry!.remove();
+    overlayEntry = null;
+  }
+
+}
+
+class _UpdateUserProfileTab extends StatelessWidget {
+  const _UpdateUserProfileTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint("edit profile");
+    return Container(
+      height: 60,
+      width: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        color: Colors.black
+      ),
+      child: Column(
+        children: [Text("edie prof")],
+      ),
+    );
+    
+  }
+}
+
+

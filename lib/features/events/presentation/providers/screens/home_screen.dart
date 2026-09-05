@@ -2,6 +2,7 @@ import 'package:eventify/core/widgets/custom_progress_indicator.dart';
 import 'package:eventify/core/widgets/media_overlay.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
 import 'package:eventify/features/media/domain/entities/media_entity.dart';
+import 'package:eventify/features/media/presentation/camera_tab_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -23,7 +24,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         data: (mediaList){
           if (mediaList.isEmpty){
             return Center(
-              child: Text("media list is empty right now")
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "no posts right now. be the first to post!",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(height: 6,),
+                  FilledButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraTabScreen()));
+                  }, 
+                  child: Text("make a post")
+                )
+                ],
+              )
             );
           }
           return PageView.builder(

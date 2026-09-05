@@ -26,6 +26,7 @@ final publicEventsProvider = StreamProvider<List<EventEntity>>((ref){
 });
 
 final publicFeedProvider = StreamProvider<List<MediaEntity>>((ref){
+  ref.watch(_publicEventIdsKeyProvider);
   final eventIds = ref.watch(publicEventIdsProvider);
   return ref.watch(mediaRepositoryProvider).watchMediaForEvents(eventIds);
 });
@@ -47,7 +48,12 @@ final userEventProvider = StreamProvider.family<List<EventEntity>, String>((ref,
 });
 
 final publicEventIdsProvider = Provider<List<String>>((ref){
-  return ref.watch(publicEventsProvider.select(
+  final ids = ref.watch(publicEventsProvider.select(
     (asyncEvents) => asyncEvents.value?.map((e) => e.id).toList() ?? [],
   ));
+  return ids;
+});
+
+final _publicEventIdsKeyProvider = Provider<String>((ref){
+  return (ref.watch(publicEventIdsProvider)..sort()).join(",");
 });

@@ -23,6 +23,9 @@ class CameraTabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: PhosphorIcon(PhosphorIcons.arrowLeft())),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

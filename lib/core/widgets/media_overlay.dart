@@ -17,7 +17,6 @@ class MediaOverlay extends ConsumerWidget {
     final eventAsync = ref.watch(eventIdProvider(media.eventId));
     final userAsync = ref.watch(userIdProvider(media.uploadedBy));
     final currentUser = ref.watch(authStateChangesProvider).value;
-    final joinEventAsync = ref.watch(eventRepositoryProvider);
 
     return Positioned(
       left: -40,
@@ -57,7 +56,7 @@ class MediaOverlay extends ConsumerWidget {
                     if (event == null || currentUser == null){
                       return SizedBox.shrink();
                     }
-                    return JoinRoomWidget(currentUserId: currentUser.email, eventId: event.id);
+                    return JoinRoomWidget(currentUserId: currentUser.id, eventId: event.id);
                   }, 
                   error: (_, _){
                     return SizedBox.shrink();
