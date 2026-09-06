@@ -60,16 +60,18 @@ class ProfileScreen extends ConsumerWidget {
                                             GestureDetector(
                                               onTap: (){
                                                 profileAsync.updateUserProfile(
-                                                  uid: "r", 
+                                                  uid: data.id, 
                                                   bio: bioController.text, 
                                                   displayName: displayNameController.text, 
                                                   tiktokUrl: tiktokUrlController.text, 
                                                   instagramUrl: instagramUrlController.text
                                                 );
+                                                Navigator.pop(context);
                                               },
                                               child: PhosphorIcon(PhosphorIcons.thumbsUp())
                                             ),
                                             GestureDetector(
+                                              onTap: () => Navigator.pop(context),
                                               child: PhosphorIcon(PhosphorIcons.x())
                                             )
                                           ],
@@ -244,26 +246,4 @@ class UpdateUserProfileTab {
   }
 
 }
-
-class _UpdateUserProfileTab extends StatelessWidget {
-  const _UpdateUserProfileTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    debugPrint("edit profile");
-    return Container(
-      height: 60,
-      width: 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        color: Colors.black
-      ),
-      child: Column(
-        children: [Text("edie prof")],
-      ),
-    );
-    
-  }
-}
-
 
