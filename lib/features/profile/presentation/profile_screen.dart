@@ -43,6 +43,9 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               "@${data.userName}"
                             ),
+                            Text(
+                              data.bio ?? " "
+                            ),
                             ElevatedButton(
                               onPressed: () {
                                 showDialog(
@@ -52,35 +55,42 @@ class ProfileScreen extends ConsumerWidget {
                                       borderRadius: BorderRadiusGeometry.circular(6)
                                     ),
                                     title: Text("edit your profile"),
-                                    content: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    content: SizedBox(
+                                      height: 400,
+                                      width: 300,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            GestureDetector(
-                                              onTap: (){
-                                                profileAsync.updateUserProfile(
-                                                  uid: data.id, 
-                                                  bio: bioController.text, 
-                                                  displayName: displayNameController.text, 
-                                                  tiktokUrl: tiktokUrlController.text, 
-                                                  instagramUrl: instagramUrlController.text
-                                                );
-                                                Navigator.pop(context);
-                                              },
-                                              child: PhosphorIcon(PhosphorIcons.thumbsUp())
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: (){
+                                                    profileAsync.updateUserProfile(
+                                                      uid: data.id, 
+                                                      bio: bioController.text, 
+                                                      displayName: displayNameController.text, 
+                                                      tiktokUrl: tiktokUrlController.text, 
+                                                      instagramUrl: instagramUrlController.text
+                                                    );
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: PhosphorIcon(PhosphorIcons.thumbsUp())
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () => Navigator.pop(context),
+                                                  child: PhosphorIcon(PhosphorIcons.x())
+                                                )
+                                              ],
                                             ),
-                                            GestureDetector(
-                                              onTap: () => Navigator.pop(context),
-                                              child: PhosphorIcon(PhosphorIcons.x())
-                                            )
+                                            Textfieldwidget(title: "", hintText: "display name", textEditingController: displayNameController,),
+                                            Textfieldwidget(title: "", hintText: "bio", textEditingController: bioController,),
+                                            Textfieldwidget(title: "", hintText: "tiktok username", textEditingController: tiktokUrlController,),
+                                            Textfieldwidget(title: "", hintText: "instagram username", textEditingController: instagramUrlController,),
                                           ],
                                         ),
-                                        Textfieldwidget(title: "display name", hintText: " ", textEditingController: displayNameController,),
-                                        Textfieldwidget(title: "bio", hintText: " ", textEditingController: bioController,),
-                                        Textfieldwidget(title: "tiktok username", hintText: " ", textEditingController: tiktokUrlController,),
-                                        Textfieldwidget(title: "instagram username", hintText: " ", textEditingController: instagramUrlController,),
-                                      ],
+                                      ),
                                     ),
                                   )
                                 );

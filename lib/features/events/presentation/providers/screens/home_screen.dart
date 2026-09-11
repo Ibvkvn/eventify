@@ -1,4 +1,5 @@
 import 'package:eventify/core/widgets/custom_progress_indicator.dart';
+import 'package:eventify/core/widgets/home_top_bar.dart';
 import 'package:eventify/core/widgets/media_overlay.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
 import 'package:eventify/features/media/domain/entities/media_entity.dart';
@@ -17,45 +18,55 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {  
   @override
   Widget build(BuildContext context) {
+    debugPrint('🏠🏠🏠 HomeScreen build() called');
     final feed = ref.watch(publicFeedProvider);
 
     return Scaffold(
-      body: feed.when(
-        data: (mediaList){
-          if (mediaList.isEmpty){
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "no posts right now. be the first to post!",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  SizedBox(height: 6,),
-                  FilledButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraTabScreen()));
-                  }, 
-                  child: Text("make a post")
-                )
-                ],
-              )
-            );
-          }
-          return PageView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: mediaList.length,
-            itemBuilder: (context, index){
-              return _MediaTile(media: mediaList[index]);
+      body: Stack(
+        children: [ 
+            feed.when(
+            data: (mediaList){
+              if (mediaList.isEmpty){
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "no posts right now. be the first to post!",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      SizedBox(height: 6,),
+                      FilledButton(
+                        onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CameraTabScreen()));
+                        }, 
+                        child: Text("make a post")
+                      )
+                    ],
+                  )
+                );
+              }
+              return PageView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: mediaList.length,
+                itemBuilder: (context, index){
+                  return _MediaTile(media: mediaList[index]);
+                }
+              );
+            }, 
+            error: (err, stack) => Center(child: Text("something went wrong: $err"),), 
+            loading: (){
+              return Center(
+                child: CustomProgressIndicator(),
+              );
             }
-          );
-        }, 
-        error: (err, stack) => Center(child: Text("something went wrong: $err"),), 
-        loading: (){
-          return Center(
-            child: CustomProgressIndicator(),
-          );
-        }
-      )
+          ),
+          Positioned(
+            top: 0, left: 0, right: 0,
+            child: HomeTopBar(onSearch: (){}, createRoom: (){})
+          )
+        ]
+      ),
     );
   }
 }

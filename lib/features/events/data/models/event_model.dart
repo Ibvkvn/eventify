@@ -14,10 +14,10 @@ class EventModel extends EventEntity{
   factory EventModel.fromMap(Map<String, dynamic>map, String id){
     return EventModel(
       id: id, 
-      title: map['title'] as String, 
-      createdBy: map['createdBy'] as String, 
+      title: map['title'] as String? ?? "unknown", 
+      createdBy: map['createdBy'] as String? ?? "unknown", 
       eventVisibility: (map['eventVisibility'] as String) == "public" ? EventVisibility.public : EventVisibility.private, 
-      joinCode: map['joinCode'] as String, 
+      joinCode: map['joinCode'] as String? ?? "unknown", 
       createdAt: (map['createdAt'] as dynamic).toDate() as DateTime,
       memberCount: map['memberCount'] as int? ?? 0,
     );

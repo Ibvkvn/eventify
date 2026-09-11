@@ -113,7 +113,9 @@ class EventRepositoryImplementation implements EventRepository{
 
   @override
   Stream<List<EventEntity>> watchPublicEvents () {
+    debugPrint('🔥🔥🔥 watchPublicEvents() called, querying Firestore...');
     return _events.where('eventVisibility', isEqualTo: 'public').snapshots().map((snap){
+      debugPrint('🔥 snapshot received — ${snap.docs.length} docs');
       return snap.docs.map((d) => EventModel.fromMap(d.data(), d.id)).toList();
     });
   }

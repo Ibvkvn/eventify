@@ -85,6 +85,7 @@ class SpinnerPainter extends CustomPainter {
     }
   }
 
+  @override
   bool shouldRepaint(covariant SpinnerPainter oldDelegate){
     return oldDelegate.progress != progress;
   }

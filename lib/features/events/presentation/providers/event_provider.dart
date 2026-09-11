@@ -19,15 +19,21 @@ final mediaRepositoryProvider = Provider<MediaRepository>((ref){
 
 final publicEventsProvider = StreamProvider<List<EventEntity>>((ref){
   // return ref.watch(eventRepositoryProvider).watchPublicEvents();
+  debugPrint('🚨🚨🚨 publicEventsProvider PROVIDER FUNCTION CALLED 🚨🚨🚨');
   return ref.watch(eventRepositoryProvider).watchPublicEvents().map((events) {
+    debugPrint("public events found: ${events.length}");
     debugPrint('📍 public events found: ${events.length} — ${events.map((e) => e.title).toList()}');
     return events;
+  }).handleError((e, stack){
+    debugPrint('❌❌❌ publicEventsProvider STREAM ERROR: $e');
+    debugPrint('Stack: $stack');
   });
 });
 
 final publicFeedProvider = StreamProvider<List<MediaEntity>>((ref){
   ref.watch(_publicEventIdsKeyProvider);
   final eventIds = ref.watch(publicEventIdsProvider);
+  debugPrint('📡 publicFeedProvider about to query media for: $eventIds');
   return ref.watch(mediaRepositoryProvider).watchMediaForEvents(eventIds);
 });
 
@@ -48,9 +54,9 @@ final userEventProvider = StreamProvider.family<List<EventEntity>, String>((ref,
 });
 
 final publicEventIdsProvider = Provider<List<String>>((ref){
-  final ids = ref.watch(publicEventsProvider.select(
-    (asyncEvents) => asyncEvents.value?.map((e) => e.id).toList() ?? [],
-  ));
+  final asynEvents = ref.watch(publicEventsProvider);
+  final ids = asynEvents.value?.map((e)=> e.id).toList() ?? [];
+  debugPrint("🆔 ids found: $ids");
   return ids;
 });
 
