@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Textfieldwidget extends StatefulWidget {
-  final String title;
-  final String hintText;
+  final String? title;
+  final String? hintText;
   final bool obscureText;
   final TextEditingController? textEditingController;
   final String? errorText;
@@ -12,8 +12,8 @@ class Textfieldwidget extends StatefulWidget {
 
   const Textfieldwidget({
     super.key,
-    required this.title,
-    required this.hintText,
+    this.title,
+    this.hintText,
     this.obscureText = false,
     this.textEditingController,
     this.errorText,
@@ -39,10 +39,11 @@ class _TextfieldwidgetState extends State<Textfieldwidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        if(widget.title?.isNotEmpty ?? false)
+          Text(
+            widget.title!,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
         SizedBox(height: 6,),
         TextField(
           controller: widget.textEditingController,

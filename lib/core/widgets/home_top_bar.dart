@@ -1,7 +1,13 @@
+import 'package:eventify/core/widgets/custom_progress_indicator.dart';
+import 'package:eventify/core/widgets/text_field_widget.dart';
+import 'package:eventify/features/auth/presentation/providers/auth_provider.dart';
+import 'package:eventify/features/events/domain/entities/event_entity.dart';
+import 'package:eventify/features/events/presentation/providers/event_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class HomeTopBar extends StatelessWidget {
+class HomeTopBar extends ConsumerWidget {
   final VoidCallback onSearch;
   final VoidCallback createRoom;
   const HomeTopBar({
@@ -11,7 +17,10 @@ class HomeTopBar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final eventAsync = ref.watch(eventRepositoryProvider);
+    final userAsync = ref.watch(authStateChangesProvider);
+
     return SafeArea(
       child: Padding(
         padding: EdgeInsetsGeometry.symmetric(horizontal: 16, vertical: 8),
@@ -31,12 +40,55 @@ class HomeTopBar extends StatelessWidget {
                 child: Text(
                   "search for a friend or an event",
                   style: Theme.of(context).textTheme.labelMedium,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
             SizedBox(width: 6,),
             FilledButton(
-              onPressed: (){}, 
+              onPressed: () =>  showDialog(context: context, builder: (_) => CreateEventRoomWidget()),
+              // {
+              //   debugPrint("create room clicked");
+              //   TextEditingController roomTitle = TextEditingController();
+              //   showDialog(
+              //     context: context,
+              //     builder: (context) => AlertDialog(
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadiusGeometry.circular(6)
+              //       ),
+              //       content: SizedBox(
+              //         height: 250,
+              //         child: userAsync.when(
+              //           data: (data){
+              //             return Column(
+              //               children: [
+              //                 Text("create a room"),
+              //                 Textfieldwidget(textEditingController: roomTitle,),
+              //                 FilledButton(
+              //                   onPressed: (){
+              //                     eventAsync.createEvent(
+              //                       title: roomTitle.text, 
+              //                       createdBy: data!.id, 
+              //                       eventVisibility: EventVisibility.public
+              //                     );
+              //                   }, 
+              //                   child: Text("create")
+              //                 )
+              //               ],
+              //             );
+              //           },
+              //           loading: () {
+              //             return CustomProgressIndicator();
+              //           },
+              //           error: (error, stackTrace) {
+              //             return Center(child: Text("something went wrong"),);
+              //           },
+              //         ),
+              //       ),
+              //     ),
+              //   );
+              // }, 
+              
               style: FilledButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadiusGeometry.circular(9)
@@ -44,9 +96,124 @@ class HomeTopBar extends StatelessWidget {
                 backgroundColor: Theme.of(context).colorScheme.tertiaryFixed
               ),
               child: PhosphorIcon(PhosphorIcons.plus(),)
-            )
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CreateEventRoomWidget extends ConsumerStatefulWidget {
+  const CreateEventRoomWidget({super.key});
+
+  @override
+  ConsumerState<CreateEventRoomWidget> createState() => _CreateEventRoomWidgetState();
+}
+
+class _CreateEventRoomWidgetState extends ConsumerState<CreateEventRoomWidget> {
+  final eventTitleController = TextEditingController();
+  EventVisibility eventVisibility = EventVisibility.public;
+  bool isCreating = false;
+  String? errorText;
+
+
+  @override 
+  void dispose(){
+    eventTitleController.dispose();
+    super.dispose();
+  }
+
+  Future<void> createEventRoom() async {
+    final title = eventTitleController.text.trim();
+    if(title.isEmpty){
+      setState(() {
+        errorText = "room title is required";
+      });
+      return;
+    }
+
+    final user = ref.read(authStateChangesProvider).value;
+    if (user == null) return;
+
+    setState(() {
+      isCreating = true;
+    });
+
+    try{
+      final event =  await ref.read(eventRepositoryProvider).createEvent(title: title, createdBy: user.id, eventVisibility: eventVisibility);
+
+      if(!mounted) return;
+      Navigator.pop(context);
+      showDialog(
+        context: context, 
+        builder: (_) => AlertDialog(
+          title: Center(child: Text("room created!")),
+          content: Text(
+            event.joinCode,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        )
+      );
+    }
+    catch(e){
+      if(!mounted) return;
+
+      setState(() {
+        isCreating = false;
+        errorText = "could not create the room";
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusGeometry.circular(12)
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("create an event room", style: Theme.of(context).textTheme.titleMedium,),
+          SizedBox(height: 12,),
+          Textfieldwidget(
+            hintText: "e.g boys night out", 
+            textEditingController: eventTitleController, 
+            errorText: errorText, 
+            onChanged:(value) {
+              if(errorText != null){
+                setState(() {
+                  errorText = null;
+                });
+              }
+            },
+          ),
+          SizedBox(height: 16,),
+          SegmentedButton<EventVisibility>(
+            segments: [
+              ButtonSegment(value: EventVisibility.public, label: Text("public")),
+              ButtonSegment(value: EventVisibility.private, label: Text("private"))
+            ], 
+            selected: {eventVisibility},
+            onSelectionChanged: (p0) {
+              setState(() {
+                eventVisibility = p0.first;
+              });
+            },
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: isCreating ? null : createEventRoom, 
+              child: isCreating? CustomProgressIndicator() : Text("create room")
+            ),
+          )
+        ],
       ),
     );
   }

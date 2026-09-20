@@ -43,8 +43,9 @@ class ProfileScreen extends ConsumerWidget {
                             Text(
                               "@${data.userName}"
                             ),
+                            if(data.bio!.isNotEmpty && data.bio != null)
                             Text(
-                              data.bio ?? " "
+                              data.bio!,
                             ),
                             ElevatedButton(
                               onPressed: () {
