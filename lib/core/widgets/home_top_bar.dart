@@ -18,8 +18,6 @@ class HomeTopBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final eventAsync = ref.watch(eventRepositoryProvider);
-    final userAsync = ref.watch(authStateChangesProvider);
 
     return SafeArea(
       child: Padding(
@@ -47,48 +45,6 @@ class HomeTopBar extends ConsumerWidget {
             SizedBox(width: 6,),
             FilledButton(
               onPressed: () =>  showDialog(context: context, builder: (_) => CreateEventRoomWidget()),
-              // {
-              //   debugPrint("create room clicked");
-              //   TextEditingController roomTitle = TextEditingController();
-              //   showDialog(
-              //     context: context,
-              //     builder: (context) => AlertDialog(
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadiusGeometry.circular(6)
-              //       ),
-              //       content: SizedBox(
-              //         height: 250,
-              //         child: userAsync.when(
-              //           data: (data){
-              //             return Column(
-              //               children: [
-              //                 Text("create a room"),
-              //                 Textfieldwidget(textEditingController: roomTitle,),
-              //                 FilledButton(
-              //                   onPressed: (){
-              //                     eventAsync.createEvent(
-              //                       title: roomTitle.text, 
-              //                       createdBy: data!.id, 
-              //                       eventVisibility: EventVisibility.public
-              //                     );
-              //                   }, 
-              //                   child: Text("create")
-              //                 )
-              //               ],
-              //             );
-              //           },
-              //           loading: () {
-              //             return CustomProgressIndicator();
-              //           },
-              //           error: (error, stackTrace) {
-              //             return Center(child: Text("something went wrong"),);
-              //           },
-              //         ),
-              //       ),
-              //     ),
-              //   );
-              // }, 
-              
               style: FilledButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadiusGeometry.circular(9)
