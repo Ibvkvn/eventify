@@ -28,7 +28,7 @@ class EventRepositoryImplementation implements EventRepository{
       eventVisibility: eventVisibility, 
       joinCode: joinCode, 
       createdAt: DateTime.now(), 
-      memberCount: 0
+      memberCount: 1
     );
     await docRef.set(event.toMap());
     return event;

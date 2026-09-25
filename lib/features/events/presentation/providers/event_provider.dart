@@ -63,3 +63,7 @@ final publicEventIdsProvider = Provider<List<String>>((ref){
 final _publicEventIdsKeyProvider = Provider<String>((ref){
   return (ref.watch(publicEventIdsProvider)..sort()).join(",");
 });
+
+final eventMediaProvider = StreamProvider.family<List<MediaEntity>, String>((ref, eventId){
+  return ref.watch(mediaRepositoryProvider).watchEventMedia(eventId);
+});

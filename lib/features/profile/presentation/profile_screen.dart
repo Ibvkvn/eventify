@@ -130,7 +130,7 @@ class ProfileScreen extends ConsumerWidget {
                             itemCount: data.length,
                             itemBuilder: (context, index){
                               final media = data[index];
-                              return _ThumbnailTile(media: media);
+                              return ThumbnailTile(media: media);
                             },
                           );
                         }, 
@@ -167,10 +167,10 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class _ThumbnailTile extends StatelessWidget {
+class ThumbnailTile extends StatelessWidget {
   final MediaEntity media;
 
-  const _ThumbnailTile({
+  const ThumbnailTile({
     required this.media
   });
 
