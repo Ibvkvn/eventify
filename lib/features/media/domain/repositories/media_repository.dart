@@ -11,4 +11,5 @@ abstract class MediaRepository {
   Stream<List<MediaEntity>> watchEventMedia(String eventId);
   Stream<List<MediaEntity>> watchMediaForEvents(List<String> eventIds);
   Stream<List<MediaEntity>> watchUserMedia(String userId);
+  Future<void> deleteMedia(String mediaId);
 }

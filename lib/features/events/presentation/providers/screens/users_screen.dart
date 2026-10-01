@@ -1,10 +1,9 @@
 import 'package:eventify/core/widgets/custom_progress_indicator.dart';
 import 'package:eventify/core/widgets/divider_widget.dart';
+import 'package:eventify/core/widgets/thumbnail_widget.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
-import 'package:eventify/features/media/domain/entities/media_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class UsersScreen extends ConsumerWidget {
   final String userId;
@@ -72,7 +71,7 @@ class UsersScreen extends ConsumerWidget {
                             },
                           );
                         }, 
-                        error: (_, _){
+                        error: (_,__){
                           return Center(child: Text("something went wrong, try again"),);
                         }, 
                         loading: (){return CustomProgressIndicator();}
@@ -90,37 +89,6 @@ class UsersScreen extends ConsumerWidget {
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ThumbnailTile extends StatelessWidget {
-  final MediaEntity media;
-
-  const ThumbnailTile({
-    required this.media
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final imageUrl = media.mediaType == MediaType.photo ? media.mediaUrl : media.thumbnailUrl;
-
-    return Container(
-      color: Theme.of(context).colorScheme.onSurface,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          if (imageUrl != null)
-            Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
-              height: 100,
-              errorBuilder: (context, error, stackTrace) => PhosphorIcon(PhosphorIcons.videoCamera())
-            )
-          else
-            Center(child: Text("error"),)
-        ],
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:eventify/core/widgets/custom_progress_indicator.dart';
 import 'package:eventify/core/widgets/divider_widget.dart';
 import 'package:eventify/core/widgets/media_overlay.dart';
+import 'package:eventify/core/widgets/thumbnail_widget.dart';
 import 'package:eventify/features/auth/presentation/providers/auth_provider.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
-import 'package:eventify/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -124,9 +124,8 @@ class EventScreen extends ConsumerWidget {
                               );
                             }
                           );
-                        })
-                        
-
+                        }
+                        )
                       ],
                     ),
                   );

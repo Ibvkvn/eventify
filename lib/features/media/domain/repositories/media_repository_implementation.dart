@@ -100,4 +100,9 @@
       .snapshots()
       .map((snap) => snap.docs.map((d) => MediaModel.fromMap(d.data(), d.id)).toList());
     }
+
+    @override
+    Future<void> deleteMedia(String mediaId) async {
+      await _media.doc(mediaId).delete();
+    }
   }
