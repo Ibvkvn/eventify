@@ -111,7 +111,6 @@ class ProfileScreen extends ConsumerWidget {
                     SizedBox(height: 18,),
                     Consumer(builder: (context, ref, _){
                       final mediaAsync = ref.watch(userMediaProvider(data.id));
-
                       return mediaAsync.when(
                         data: (data){
                           if(data.isEmpty){

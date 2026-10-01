@@ -2,6 +2,7 @@ import 'package:eventify/core/widgets/custom_progress_indicator.dart';
 import 'package:eventify/features/auth/presentation/providers/auth_provider.dart';
 import 'package:eventify/features/events/presentation/providers/event_provider.dart';
 import 'package:eventify/features/events/presentation/providers/screens/event_screen.dart';
+import 'package:eventify/features/events/presentation/providers/screens/users_screen.dart';
 import 'package:eventify/features/media/domain/entities/media_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +47,10 @@ class MediaOverlay extends ConsumerWidget {
                 ),
                 SizedBox(height: 4,),
                 userAsync.when(
-                  data: (data) => Text('@${data!.userName}'), 
+                  data: (data) => InkWell(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_)=> UsersScreen(userId: data.id))),
+                    child: Text('@${data!.userName}')
+                  ), 
                   error: (object, stackTrace){
                     return CustomProgressIndicator(color: Theme.of(context).colorScheme.error,);
                   }, 
